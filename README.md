@@ -5,7 +5,8 @@ To run it
 3. run yarn start / npm start
 
 // To run in emulator
-- from metro page, click, open app in android emulator
+- open your emulator from android studio app
+- then from metro bundler page, click, open app in android emulator
 
 // To run in actual device
 - install expo go app on your phone
