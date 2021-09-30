@@ -1,59 +1,134 @@
-import { StatusBar } from "expo-status-bar";
-import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { Platform } from "@unimodules/react-native-adapter";
+import React, { useState } from "react";
+import {
+  Button,
+  SafeAreaView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import AppButton from "./components/AppButton";
 import Cat from "./components/Cat";
 
-export default function App() {
-  return (
-    <>
-      <StatusBar style="dark" />
-      <View style={styles.container1}>
-        <View>
-          <Cat name="Jim" />
-          <Cat name="Bob" />
-          <Cat name="Dylan" />
-          <Cat name="Nike" />
+const App = () => {
+  const [firstNumber, setFirstNumber] = useState(0);
+  const [secondNumber, setSecondNumber] = useState(0);
+  const [result, setResult] = useState(0);
 
-          {/* <p>Hello world...</p> */}
-          <Text style={styles.title}>Hello World</Text>
-          <Text>Hello World</Text>
-          <Text>Hello World</Text>
-        </View>
-      </View>
-      <View style={styles.container2}>
-        {/* <p>Hello world...</p> */}
-        <Text style={styles.title}>Hello World</Text>
+  const [inputStyle, setInputStyle] = useState({
+    borderBottomWidth: 2,
+    borderBottomColor: "#bbb",
+    paddingTop: 10,
+    paddingRight: 10,
+    paddingBottom: 10,
+  });
+
+  console.log(firstNumber, secondNumber);
+
+  return (
+    <SafeAreaView
+      style={[
+        styles.mainContainer,
+        {
+          marginTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+        },
+      ]}
+    >
+      <View>
         <Text>Hello World</Text>
-        <Text>Hello World</Text>
+        <Cat name="Jim" />
+        {/* <input type="text" place /> */}
+        <TextInput
+          keyboardType="numeric"
+          style={styles.inputStyle}
+          placeholder="Enter first number"
+          // In react
+          // onChange={e => setFirstNumber(e.target.value)}
+          onChangeText={(val) => setFirstNumber(val)}
+        />
+        <TextInput
+          keyboardType="numeric"
+          onPressIn={() => {
+            setInputStyle({
+              ...inputStyle,
+              backgroundColor: "yellow",
+            });
+          }}
+          style={inputStyle}
+          onChangeText={(val) => setSecondNumber(val)}
+          placeholder="Enter second number"
+        />
+
+        {/* <button onClick>Add</button> */}
+        <AppButton
+          text="Add"
+          onPress={() => {
+            setResult(+firstNumber + +secondNumber);
+          }}
+          style={styles.bgRed}
+        />
+        {/* <Button
+          title="Add"
+          onPress={() => {
+            setResult(+firstNumber + +secondNumber);
+          }}
+        /> */}
+        <Text
+          style={{
+            marginTop: 20,
+            textAlign: "center",
+          }}
+        >
+          Sum of these two inputs:
+        </Text>
+        <Text
+          style={{
+            fontSize: 40,
+            fontWeight: "bold",
+            textAlign: "center",
+          }}
+        >
+          {result}
+        </Text>
       </View>
-    </>
+    </SafeAreaView>
   );
-}
+};
+
+export default App;
 
 const styles = StyleSheet.create({
-  container1: {
+  mainContainer: {
     flex: 1,
-    backgroundColor: "white",
-    // -------- x-axis
-    // flexDirection: "row",
-
-    // |
-    // |
-    // |
-    // y-axis
-    flexDirection: "column",
-
     justifyContent: "center",
     alignItems: "center",
+    padding: 10,
   },
-  title: {
-    fontSize: 20,
-    fontWeight: "bold",
+  inputStyle: {
+    borderBottomWidth: 2,
+    borderBottomColor: "#bbb",
+    paddingTop: 10,
+    paddingRight: 10,
+    paddingBottom: 10,
   },
-  container2: {
-    flex: 1,
-    backgroundColor: "tomato",
+  button: {
     alignItems: "center",
     justifyContent: "center",
+    backgroundColor: "black",
+    // padding: 10,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+  },
+  bgRed: {
+    backgroundColor: "red",
+  },
+  bgYello: {
+    backgroundColor: "yellow",
+  },
+  buttonText: {
+    color: "white",
   },
 });
