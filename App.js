@@ -1,13 +1,11 @@
 import { Platform } from "@unimodules/react-native-adapter";
 import React, { useState } from "react";
 import {
-  Button,
   SafeAreaView,
   StatusBar,
   StyleSheet,
   Text,
   TextInput,
-  TouchableOpacity,
   View,
 } from "react-native";
 import AppButton from "./components/AppButton";
