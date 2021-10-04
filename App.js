@@ -1,12 +1,17 @@
 import { NavigationContainer } from "@react-navigation/native";
 import React from "react";
-import AppStack from "./navigations/AppStack";
 import AppTabs from "./navigations/AppTabs";
+import AuthStack from "./navigations/AuthStack";
+
+// User login navigations
+// After log in
+// Show AppTabs
 
 const App = () => {
+  const loggedIn = false;
   return (
     <NavigationContainer>
-      <AppTabs />
+      {loggedIn ? <AppTabs /> : <AuthStack />}
     </NavigationContainer>
   );
 };
