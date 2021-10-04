@@ -10,7 +10,7 @@ const validationSchema = Yup.object().shape({
   password: Yup.string().required(),
 });
 
-const LoginScreen = () => {
+const LoginScreen = ({ navigation }) => {
   return (
     <Center>
       <Image
@@ -60,8 +60,13 @@ const LoginScreen = () => {
                 onPress={handleSubmit}
                 containerStyle={{
                   width: "100%",
-                  marginTop: 10,
+                  marginVertical: 10,
                 }}
+              />
+              <Button
+                title="Not a user? Register now."
+                type="clear"
+                onPress={() => navigation.navigate("Register")}
               />
             </>
           );
