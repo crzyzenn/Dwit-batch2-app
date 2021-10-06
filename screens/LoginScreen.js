@@ -46,6 +46,7 @@ const LoginScreen = ({ navigation }) => {
                 onChangeText={handleChange("email")}
                 errorMessage={touched.email && errors.email}
                 onBlur={handleBlur("email")}
+                autoCapitalize="none"
               />
               <Input
                 placeholder="secret"
