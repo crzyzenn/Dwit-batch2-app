@@ -1,9 +1,12 @@
+import axios from "axios";
 import { Formik } from "formik";
-import React from "react";
+import React, { useState } from "react";
 import { ActivityIndicator } from "react-native";
 import { Button, Image, Input } from "react-native-elements";
+import { useDispatch } from "react-redux";
 import * as Yup from "yup";
 import Center from "../components/Center";
+import { login } from "../redux/slices/authSlice";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().email().required(),
@@ -11,6 +14,45 @@ const validationSchema = Yup.object().shape({
 });
 
 const LoginScreen = ({ navigation }) => {
+  const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
+
+  const handleLogin = async (values) => {
+    try {
+      setLoading(true);
+      // Login the user
+      const response = await axios.post(
+        "https://dwit-ecommerce.herokuapp.com/api/ph-auth/login",
+        values
+      );
+
+      // Get the user details with the logged in accessToken
+      const user = await getLoggedInUser(response.data.accessToken);
+
+      // Save the user info to redux store
+      dispatch(login({ user, token: response.data.accessToken }));
+    } catch (error) {
+      console.log(error.response.data);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const getLoggedInUser = async (token) => {
+    try {
+      const response = await axios.get(
+        "https://dwit-ecommerce.herokuapp.com/api/ph-auth/user",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      console.log(error.response.data);
+    }
+  };
   return (
     <Center>
       <Image
@@ -31,7 +73,7 @@ const LoginScreen = ({ navigation }) => {
           email: "",
           password: "",
         }}
-        onSubmit={(val) => console.log(val)}
+        onSubmit={handleLogin}
         validationSchema={validationSchema}
       >
         {({ handleSubmit, handleChange, errors, touched, handleBlur }) => {
@@ -58,6 +100,7 @@ const LoginScreen = ({ navigation }) => {
               />
               <Button
                 title="Login"
+                loading={loading}
                 onPress={handleSubmit}
                 containerStyle={{
                   width: "100%",

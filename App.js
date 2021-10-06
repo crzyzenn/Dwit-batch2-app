@@ -1,18 +1,17 @@
-import { NavigationContainer } from "@react-navigation/native";
 import React from "react";
-import AppTabs from "./navigations/AppTabs";
-import AuthStack from "./navigations/AuthStack";
+import { Provider } from "react-redux";
+import MainApp from "./components/MainApp";
+import { store } from "./redux/store";
 
 // User login navigations
 // After log in
 // Show AppTabs
 
 const App = () => {
-  const loggedIn = false;
   return (
-    <NavigationContainer>
-      {loggedIn ? <AppTabs /> : <AuthStack />}
-    </NavigationContainer>
+    <Provider store={store}>
+      <MainApp />
+    </Provider>
   );
 };
 
