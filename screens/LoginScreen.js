@@ -70,13 +70,20 @@ const LoginScreen = ({ navigation }) => {
       />
       <Formik
         initialValues={{
-          email: "",
-          password: "",
+          email: "zen@gmail.com",
+          password: "hellonepal",
         }}
         onSubmit={handleLogin}
         validationSchema={validationSchema}
       >
-        {({ handleSubmit, handleChange, errors, touched, handleBlur }) => {
+        {({
+          handleSubmit,
+          handleChange,
+          errors,
+          touched,
+          handleBlur,
+          values,
+        }) => {
           return (
             <>
               {/* <Text>{JSON.stringify(values, null, 6)}</Text>
@@ -89,6 +96,7 @@ const LoginScreen = ({ navigation }) => {
                 errorMessage={touched.email && errors.email}
                 onBlur={handleBlur("email")}
                 autoCapitalize="none"
+                value={values.email}
               />
               <Input
                 placeholder="secret"
@@ -97,6 +105,7 @@ const LoginScreen = ({ navigation }) => {
                 onChangeText={handleChange("password")}
                 errorMessage={touched.password && errors.password}
                 onBlur={handleBlur("password")}
+                value={values.password}
               />
               <Button
                 title="Login"
