@@ -20,6 +20,7 @@ const ProductDetailScreen = ({ route }) => {
       pricePerItem: product.price,
       totalPrice: product.price,
       quantity: 1,
+      image: product.image,
     };
 
     dispatch(addToCart(productToAdd));
@@ -29,11 +30,16 @@ const ProductDetailScreen = ({ route }) => {
   };
 
   return (
-    <ScrollView>
+    <ScrollView
+      style={{
+        backgroundColor: "white",
+      }}
+    >
       <Image
         source={{
-          uri: "https://source.unsplash.com/random",
+          uri: product.image,
         }}
+        resizeMode="contain"
         style={{
           width: "100%",
           height: 300,

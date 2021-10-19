@@ -24,11 +24,46 @@ const cartSlice = createSlice({
         state.items = [action.payload, ...state.items];
       }
     },
-    increaseQuantity: (state, action) => {},
-    decreaseQuantity: (state, action) => {},
+    // We should get "id" in action.payload
+    increaseQuantity: (state, action) => {
+      // 1. Find the product with that id in store...
+      // 2. Modify the quantity -> +1
+      // 3. Update total price -> newQuantity * pricePerItem
+
+      const productIndex = state.items.findIndex(
+        (item) => item.id === action.payload
+      );
+      const newQuantity = state.items[productIndex].quantity + 1;
+      state.items[productIndex] = {
+        ...state.items[productIndex],
+        quantity: newQuantity,
+        totalPrice: newQuantity * state.items[productIndex].pricePerItem,
+      };
+    },
+    decreaseQuantity: (state, action) => {
+      // 1. Find the product with that id in store...
+      // 2. Modify the quantity -> -1
+      // 3. Update total price -> newQuantity * pricePerItem
+      const productIndex = state.items.findIndex(
+        (item) => item.id === action.payload
+      );
+      const newQuantity = state.items[productIndex].quantity - 1;
+      if (newQuantity >= 1) {
+        state.items[productIndex] = {
+          ...state.items[productIndex],
+          quantity: newQuantity,
+          totalPrice: newQuantity * state.items[productIndex].pricePerItem,
+        };
+      }
+    },
+    // Action.payload => id
+    deleteItem: (state, action) => {
+      state.items = state.items.filter((item) => item.id !== action.payload);
+    },
   },
 });
 
-export const { addToCart } = cartSlice.actions;
+export const { addToCart, increaseQuantity, decreaseQuantity, deleteItem } =
+  cartSlice.actions;
 
 export default cartSlice.reducer;

@@ -1,9 +1,17 @@
 import React from "react";
+import { Alert } from "react-native";
 import { StyleSheet, Text, View } from "react-native";
-import { Button, Image } from "react-native-elements";
+import { Button, Icon, Image } from "react-native-elements";
+import { useDispatch } from "react-redux";
+import {
+  decreaseQuantity,
+  deleteItem,
+  increaseQuantity,
+} from "../redux/slices/cartSlice";
 import { myStyles } from "../styles/baseStyles";
 
 const CartItem = ({ item }) => {
+  const dispatch = useDispatch();
   return (
     <View
       style={{
@@ -16,12 +24,12 @@ const CartItem = ({ item }) => {
       <View
         style={{
           flexDirection: "row",
-          width: "50%",
+          width: "40%",
         }}
       >
         <Image
           source={{
-            uri: "https://source.unsplash.com/random",
+            uri: item.image,
           }}
           style={{
             width: 100,
@@ -53,7 +61,27 @@ const CartItem = ({ item }) => {
           alignItems: "center",
         }}
       >
-        <Button title="+" />
+        <Button
+          icon={<Icon name="delete" color="tomato" />}
+          type="clear"
+          onPress={() => {
+            // Show confirmation dialog to ensure deletion process.
+            Alert.alert(`${item.name} will be deleted!`, "Are you sure?", [
+              {
+                text: "Yes",
+                // If use presses yes:
+                onPress: () => {
+                  dispatch(deleteItem(item.id));
+                  console.log("Safe to delete");
+                },
+              },
+              {
+                text: "Cancel",
+              },
+            ]);
+          }}
+        />
+        <Button title="+" onPress={() => dispatch(increaseQuantity(item.id))} />
         <Text
           style={{
             marginHorizontal: 5,
@@ -61,7 +89,7 @@ const CartItem = ({ item }) => {
         >
           {item.quantity}
         </Text>
-        <Button title="-" />
+        <Button title="-" onPress={() => dispatch(decreaseQuantity(item.id))} />
       </View>
     </View>
   );
