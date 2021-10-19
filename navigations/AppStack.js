@@ -1,14 +1,26 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React from "react";
-import { Text } from "react-native";
+import { Button } from "react-native-elements";
+import CartScreen from "../screens/CartScreen";
 import HomeScreen from "../screens/HomeScreen";
 import ProductDetailScreen from "../screens/ProductDetailScreen";
 
 const Stack = createNativeStackNavigator();
 
-const AppStack = () => {
+const AppStack = ({ navigation }) => {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator
+      screenOptions={{
+        headerRight: () => (
+          <Button
+            title="Cart"
+            onPress={() => {
+              navigation.navigate("Cart");
+            }}
+          />
+        ),
+      }}
+    >
       {/* Screens */}
       <Stack.Screen
         options={{
@@ -18,6 +30,7 @@ const AppStack = () => {
         component={HomeScreen}
       />
       <Stack.Screen name="ProductDetails" component={ProductDetailScreen} />
+      <Stack.Screen name="Cart" component={CartScreen} />
     </Stack.Navigator>
   );
 };

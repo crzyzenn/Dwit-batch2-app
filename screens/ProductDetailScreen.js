@@ -1,11 +1,33 @@
 import React from "react";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { Alert, ScrollView, StyleSheet, Text, View } from "react-native";
 import { Button, Image } from "react-native-elements";
 import { myStyles } from "../styles/baseStyles";
 import { Ionicons } from "@expo/vector-icons";
+import { useDispatch, useSelector } from "react-redux";
+import { addToCart } from "../redux/slices/cartSlice";
 
 const ProductDetailScreen = ({ route }) => {
+  const state = useSelector((state) => state.cart);
+  console.log(state);
+  const dispatch = useDispatch();
   const product = route.params;
+
+  // On Add to cart button press::
+  const handleAddToCart = () => {
+    const productToAdd = {
+      id: Math.random(),
+      name: product.name,
+      pricePerItem: product.price,
+      totalPrice: product.price,
+      quantity: 1,
+    };
+
+    dispatch(addToCart(productToAdd));
+
+    // Notify the user that the product has been added
+    Alert.alert("Item added successfully", "");
+  };
+
   return (
     <ScrollView>
       <Image
@@ -33,6 +55,7 @@ const ProductDetailScreen = ({ route }) => {
               color="white"
             />
           }
+          onPress={handleAddToCart}
           iconPosition="left"
         />
         <Text>{product.description}</Text>
