@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { FlatList, View } from "react-native";
+import { ActivityIndicator, FlatList, ScrollView, View } from "react-native";
+import { Chip } from "react-native-elements";
 import { useSelector } from "react-redux";
 import ProductCard from "../components/ProductCard";
 
@@ -27,33 +28,89 @@ const HomeScreen = () => {
   const { token } = useSelector((state) => state.auth);
   const [refreshing, setRefreshing] = useState(false);
   const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
 
   const fetchProducts = async () => {
-    console.log("Refreshing");
     setRefreshing(true);
     try {
-      const response = await axios.get(
-        "https://dwit-ecommerce.herokuapp.com/api/products",
-        {
+      const [productsResponse, categoryResponse] = await axios.all([
+        axios.get("https://dwit-ecommerce.herokuapp.com/api/products", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        }
-      );
-      setProducts(response.data);
+        }),
+        axios.get("https://dwit-ecommerce.herokuapp.com/api/categories", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }),
+      ]);
+      setProducts(productsResponse.data);
+      setCategories(categoryResponse.data);
     } catch (error) {
       console.log(error.response.data);
     } finally {
       setRefreshing(false);
     }
   };
+  // const fetchCategories = async () => {
+  //   setLoading(true);
+  //   try {
+  //     const response = await axios.get(
+  //       "https://dwit-ecommerce.herokuapp.com/api/categories",
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${token}`,
+  //         },
+  //       }
+  //     );
+  //     console.log(response.data);
+  //     setCategories(response.data);
+  //   } catch (error) {
+  //     console.log(error.response.data);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
   useEffect(() => {
     fetchProducts();
+    // fetchCategories();
   }, []);
 
   return (
-    <View>
+    <View
+      style={{
+        backgroundColor: "white",
+        flex: 1,
+      }}
+    >
+      <ScrollView
+        horizontal
+        style={{
+          marginVertical: 10,
+          paddingHorizontal: 10,
+          flexGrow: 0,
+        }}
+        showsHorizontalScrollIndicator={false}
+      >
+        {categories.length === 0 ? (
+          <ActivityIndicator size="small" />
+        ) : (
+          categories.map((category) => (
+            <Chip
+              key={category._id}
+              title={category.name}
+              containerStyle={{
+                marginRight: 5,
+              }}
+              buttonStyle={{
+                backgroundColor: "teal",
+              }}
+            />
+          ))
+        )}
+      </ScrollView>
       <FlatList
         data={products}
         renderItem={({ item, index, separators }) => {

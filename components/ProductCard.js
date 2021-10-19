@@ -16,8 +16,7 @@ const ProductCard = ({ product }) => {
     >
       <Image
         source={{
-          // uri: `https://dwit-ecommerce.herokuapp.com/${product.image}`,
-          uri: "https://source.unsplash.com/random",
+          uri: product.image,
         }}
         style={{
           width: "100%",
