@@ -1,4 +1,3 @@
-import axios from "axios";
 import React, { useState } from "react";
 import {
   ActivityIndicator,
@@ -9,7 +8,6 @@ import {
 } from "react-native";
 import { Input } from "react-native-elements";
 import { useSelector } from "react-redux";
-import AppButton from "../components/AppButton";
 import Center from "../components/Center";
 import ProductCard from "../components/ProductCard";
 import { $axios } from "../lib/axios";

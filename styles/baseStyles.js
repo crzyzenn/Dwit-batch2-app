@@ -8,4 +8,9 @@ export const myStyles = {
     fontSize: 30,
     marginVertical: 10,
   },
+  container: {
+    flex: 1,
+    padding: 10,
+    backgroundColor: "white",
+  },
 };

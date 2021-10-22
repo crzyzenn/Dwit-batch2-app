@@ -4,9 +4,12 @@ import { TouchableOpacity, View } from "react-native";
 import { Badge, Button, Icon } from "react-native-elements";
 import { useSelector } from "react-redux";
 import CartScreen from "../screens/CartScreen";
+import CheckoutScreen from "../screens/CheckoutScreen";
 import HomeScreen from "../screens/HomeScreen";
+import PaymentsScreen from "../screens/PaymentsScreen";
 import ProductCategoryScreen from "../screens/ProductCategoryScreen";
 import ProductDetailScreen from "../screens/ProductDetailScreen";
+import SuccessScreen from "../screens/SuccessScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -55,6 +58,9 @@ const AppStack = ({ navigation }) => {
       />
       <Stack.Screen name="ProductDetails" component={ProductDetailScreen} />
       <Stack.Screen name="Cart" component={CartScreen} />
+      <Stack.Screen name="Checkout" component={CheckoutScreen} />
+      <Stack.Screen name="Payments" component={PaymentsScreen} />
+      <Stack.Screen name="Success" component={SuccessScreen} />
       <Stack.Screen
         options={{
           title: "Product of Category",
