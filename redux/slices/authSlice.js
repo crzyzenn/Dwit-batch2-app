@@ -8,7 +8,6 @@ const authSlice = createSlice({
 
     // Logged in user's information <Object: {name, email, mobile, id}>
     user: null,
-    token: null,
   },
   reducers: {
     login: (state, action) => {

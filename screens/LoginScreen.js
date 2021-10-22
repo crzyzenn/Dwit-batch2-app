@@ -1,4 +1,4 @@
-import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Formik } from "formik";
 import React, { useState } from "react";
 import { ActivityIndicator } from "react-native";
@@ -6,6 +6,7 @@ import { Button, Image, Input } from "react-native-elements";
 import { useDispatch } from "react-redux";
 import * as Yup from "yup";
 import Center from "../components/Center";
+import { $axios } from "../lib/axios";
 import { login } from "../redux/slices/authSlice";
 
 const validationSchema = Yup.object().shape({
@@ -21,16 +22,14 @@ const LoginScreen = ({ navigation }) => {
     try {
       setLoading(true);
       // Login the user
-      const response = await axios.post(
-        "https://dwit-ecommerce.herokuapp.com/api/ph-auth/login",
-        values
-      );
-
+      const response = await $axios.post("/ph-auth/login", values);
       // Get the user details with the logged in accessToken
       const user = await getLoggedInUser(response.data.accessToken);
 
+      // Deprecated library - no longer maintained by the community...
+      await AsyncStorage.setItem("accessToken", response.data.accessToken);
       // Save the user info to redux store
-      dispatch(login({ user, token: response.data.accessToken }));
+      dispatch(login({ user }));
     } catch (error) {
       console.log(error.response.data);
     } finally {
@@ -38,16 +37,9 @@ const LoginScreen = ({ navigation }) => {
     }
   };
 
-  const getLoggedInUser = async (token) => {
+  const getLoggedInUser = async () => {
     try {
-      const response = await axios.get(
-        "https://dwit-ecommerce.herokuapp.com/api/ph-auth/user",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await $axios.get("/ph-auth/user");
       return response.data;
     } catch (error) {
       console.log(error.response.data);

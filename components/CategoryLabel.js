@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
     backgroundColor: "teal",
     padding: 3,
     borderRadius: 20,
-    width: "50%",
+    maxWidth: "60%",
     marginBottom: 10,
   },
   categoryTitle: {

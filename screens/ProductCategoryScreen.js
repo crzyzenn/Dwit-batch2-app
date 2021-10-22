@@ -5,28 +5,19 @@ import { StyleSheet, Text, View } from "react-native";
 import { useSelector } from "react-redux";
 import Center from "../components/Center";
 import ProductCard from "../components/ProductCard";
+import { $axios } from "../lib/axios";
 import { myStyles } from "../styles/baseStyles";
 
 const ProductCategoryScreen = ({ route }) => {
   const { id, name } = route.params;
-  const { token } = useSelector((state) => state.auth);
   const [refreshing, setRefreshing] = useState(false);
   const [products, setProducts] = useState([]);
 
   const fetchProducts = async () => {
-    console.log("Refreshing");
     setRefreshing(true);
     try {
-      const response = await axios.get(
-        `https://dwit-ecommerce.herokuapp.com/api/products/category/${id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await $axios.get(`/products/category/${id}`);
       setProducts(response.data);
-      console.log(response.data);
     } catch (error) {
       console.log(error.response.data);
     } finally {
@@ -56,6 +47,10 @@ const ProductCategoryScreen = ({ route }) => {
       {refreshing ? (
         <Center>
           <ActivityIndicator size="large" />
+        </Center>
+      ) : products.length === 0 ? (
+        <Center>
+          <Text>No products from this category.</Text>
         </Center>
       ) : (
         <FlatList

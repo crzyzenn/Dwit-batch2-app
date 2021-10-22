@@ -4,9 +4,9 @@ import { FlatList, ScrollView, View } from "react-native";
 import { Chip } from "react-native-elements";
 import { useSelector } from "react-redux";
 import ProductCard from "../components/ProductCard";
+import { $axios } from "../lib/axios";
 
 const HomeScreen = ({ navigation }) => {
-  const { token } = useSelector((state) => state.auth);
   const [refreshing, setRefreshing] = useState(false);
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -16,14 +16,7 @@ const HomeScreen = ({ navigation }) => {
     console.log("Refreshing");
     setRefreshing(true);
     try {
-      const response = await axios.get(
-        "https://dwit-ecommerce.herokuapp.com/api/products",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await $axios.get("/products");
       setProducts(response.data);
       console.log(response.data);
     } catch (error) {
@@ -36,14 +29,7 @@ const HomeScreen = ({ navigation }) => {
   const fetchCategories = async () => {
     setLoading(true);
     try {
-      const response = await axios.get(
-        "https://dwit-ecommerce.herokuapp.com/api/categories",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await $axios.get("/categories");
       setCategories(response.data);
     } catch (error) {
       console.log(error.response.data);
